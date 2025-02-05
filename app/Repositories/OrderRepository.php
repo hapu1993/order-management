@@ -24,7 +24,7 @@ class OrderRepository implements OrderRepositoryInterface
             $upload = Upload::create(['reference' => uniqid(), 'status' => 1]);
 
             $excelUpload = Excel::import(new OrdersImport($upload), storage_path('app/private/' . $path));
-
+            
             $latestUpload = Upload::with(['orders', 'orders.products'])->find($upload->id);
 
             $pdf = Pdf::loadView('pdfs.order-details', ['upload' => $latestUpload])->setPaper('a4', 'landscape'); // Set the paper to A4 and landscape
@@ -39,7 +39,7 @@ class OrderRepository implements OrderRepositoryInterface
 
             // Save the PDF to the public storage
             $pdf->save(storage_path('app/public/' . $pdfPath));
-
+            
 
             // Generate a public URL
             $pdfLink = asset('storage/' . $pdfPath);
