@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Support\Facades\Config;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,8 +20,8 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($e instanceof \Illuminate\Validation\ValidationException) {
                 return response()->json([
                     'status' => false,
-                    'status_code' => 2000,
-                    'message' => 'Validation Errors',
+                    'status_code' => Config::get('azbow.order_validation_errors')['code'],
+                    'message' => Config::get('azbow.order_validation_errors')['message'],
                     'errors' => $e->errors(), 
                 ], 422);
             }

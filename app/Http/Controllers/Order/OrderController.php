@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Order;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrderUploadRequest;
 use App\Repositories\Interfaces\OrderRepositoryInterface;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Response;
 
 class OrderController extends Controller
@@ -19,12 +20,12 @@ class OrderController extends Controller
         try {
 
             $fileUpload = $this->orderRepo->upload($request->file('file'));
-            
+
 
 
             $data['status'] = true;
-            $data['status_code'] = 1000;
-            $data['message'] = "Order Uploaded Successfully";
+            $data['status_code'] = Config::get('azbow.order_success')['code'];
+            $data['message'] = Config::get('azbow.order_success')['message'];
             $data['data']['link'] = $fileUpload['link'];
 
             return Response::json($data);
@@ -32,15 +33,15 @@ class OrderController extends Controller
             // Excel Each Raw Validation errors
             return response()->json([
                 'status' => false,
-                'status_code' => 2001,
-                'message' => 'Validation failed for some rows.',
+                'status_code' => Config::get('azbow.order_row_validation_errors')['code'],
+                'message' => Config::get('azbow.order_row_validation_errors')['message'],
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'status_code' => 3000,
-                'message' => 'There was an error importing the file.',
+                'status_code' => Config::get('azbow.order_server_errors')['code'],
+                'message' => Config::get('azbow.order_server_errors')['message'],
                 'errors' => $e->getMessage(),
             ], 500);
         }
