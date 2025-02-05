@@ -28,15 +28,21 @@ You can either:
 Update the project dependencies using Composer:
 
 	`composer update`
+	
+- **Step 05 (Link Storage)**
+After clone project storage folder not will link to public storage
+just run
 
-- **Step 05 (Serve the Application)**
+	`php artisan storage:link`
+
+- **Step 06 (Serve the Application)**
 Run the project using the following command:
 
 	`php artisan serve`
 	
 	The project will be available at ` http://127.0.0.1:8000/ ` by default.
 
-- **Step 06 (Upload Orders)**
+- **Step 07 (Upload Orders)**
 To upload Excel or CSV order files, use the following API endpoint:
 
 	`POST http://127.0.0.1:8000/api/order/upload`
